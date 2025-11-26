@@ -22,11 +22,12 @@ SistemaViajes.BusinessLogic.ServiceConfiguration.BusinessLogic(builder.Services)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("http://localhost:53114/", policy =>
+    options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -69,6 +70,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularApp");
 
 app.UseStaticFiles();
 
