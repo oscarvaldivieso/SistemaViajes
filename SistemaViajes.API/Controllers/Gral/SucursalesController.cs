@@ -60,7 +60,7 @@ namespace SistemaViajes.API.Controllers.Gral
             }
         }
 
-        [HttpDelete("Elliminar")]
+        [HttpDelete("Eliminar")]
         public IActionResult Delete(int id)
         {
             var result = _gralServices.SucursalEliminar(id);

@@ -1,0 +1,95 @@
+﻿using SistemaViajes.DataAccess.Repositories.Gral;
+using SistemaViajes.Models.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SistemaViajes.BusinessLogic.Services
+{
+    public class RRHHServices
+    {
+        private readonly ColaboradoresRepository _colaboradoresRepository;
+
+        public RRHHServices(ColaboradoresRepository colaboradoresRepository)
+        {
+            _colaboradoresRepository = colaboradoresRepository;
+        }
+
+
+        #region Colaboradores
+        public ServiceResult ColaboradoresListar()
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var data = _colaboradoresRepository.ColaboradoresListar();
+                return result.Ok("Listado obtenido correctamente.", data);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error al listar colaboradores: {ex.Message}");
+            }
+        }
+
+        public ServiceResult ColaboradoresInsertar(ColaboradoresDTO item)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var response = _colaboradoresRepository.ColaboradoresInsertar(item);
+
+                if (response.CodeStatus == 1)
+                    return result.Ok(null, "Colaborador registrado exitosamente.");
+
+                return result.SetMessage(response.MessageStatus, ServiceResultType.Warning);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error al insertar colaborador: {ex.Message}");
+            }
+        }
+
+        public ServiceResult ColaboradoresActualizar(ColaboradoresDTO item)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var response = _colaboradoresRepository.ColaboradoresActualizar(item);
+
+                if (response.CodeStatus == 1)
+                    return result.Ok(null, "Colaborador actualizado correctamente.");
+
+                return result.SetMessage(response.MessageStatus, ServiceResultType.Warning);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error al actualizar colaborador: {ex.Message}");
+            }
+        }
+
+        public ServiceResult ColaboradoresEliminar(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var response = _colaboradoresRepository.ColaboradoresEliminar(id);
+
+                if (response.CodeStatus == 1)
+                    return result.Ok(null, "Colaborador eliminado correctamente.");
+
+                return result.SetMessage(response.MessageStatus, ServiceResultType.Warning);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error al eliminar colaborador: {ex.Message}");
+            }
+        }
+        #endregion
+    }
+}

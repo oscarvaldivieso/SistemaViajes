@@ -23,11 +23,14 @@ namespace SistemaViajes.BusinessLogic
             services.AddScoped<MunicipiosRepository>();
             services.AddScoped<SucursalesRepository>();
 
+            services.AddScoped<ColaboradoresRepository>();
+
         }
 
         public static void BusinessLogic(this IServiceCollection services)
         {
             services.AddScoped<GralServices>();
+            services.AddScoped<RRHHServices>();
         }
 
 

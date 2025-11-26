@@ -23,16 +23,17 @@ namespace SistemaViajes.BusinessLogic.Services
 
         #region Departamentos
         public ServiceResult ListDepartamentos()
-        { 
+        {
             var result = new ServiceResult();
+
             try
             {
                 var response = _departamentosRepository.List();
-                return result.Ok(response);
+                return result.Ok("Departamentos listados correctamente.", response);
             }
             catch (Exception ex)
             {
-                return result.Error(ex.Message);
+                return result.Error($"Error al obtener departamentos: {ex.Message}");
             }
         }
 
@@ -41,21 +42,20 @@ namespace SistemaViajes.BusinessLogic.Services
 
         #region Municipios
         public ServiceResult ListarMunicipiosPorDepartamento(string depaCodigo)
-        {   
-
+        {
             var result = new ServiceResult();
 
             if (string.IsNullOrWhiteSpace(depaCodigo))
-                return result.Error("El Codigo del departamento es requerido");
+                return result.Error("El código del departamento es requerido.");
 
             try
             {
                 var response = _municipiosRepository.ListarPorDepartamento(depaCodigo);
-                return result.Ok(response);
+                return result.Ok("Municipios listados correctamente.", response);
             }
             catch (Exception ex)
             {
-                return result.Error(ex.Message);
+                return result.Error($"Error al obtener municipios: {ex.Message}");
             }
         }
         #endregion
@@ -64,14 +64,15 @@ namespace SistemaViajes.BusinessLogic.Services
         public ServiceResult ListarSucursales()
         {
             var result = new ServiceResult();
+
             try
             {
                 var response = _sucursalesRepository.ListarSucursales();
-                return result.Ok(response);
+                return result.Ok("Sucursales listadas correctamente.", response);
             }
             catch (Exception ex)
             {
-                return result.Error(ex.Message);
+                return result.Error($"Error al obtener las sucursales: {ex.Message}");
             }
         }
 
@@ -83,15 +84,17 @@ namespace SistemaViajes.BusinessLogic.Services
             {
                 var response = _sucursalesRepository.SucursalInsertar(sucursal);
 
-                return response.CodeStatus == 1
-                    ? result.Ok(response)
-                    : result.Error(response);
+                if (response.CodeStatus == 1)
+                    return result.Ok("Sucursal insertada correctamente.");
+
+                return result.Error(response.MessageStatus ?? "No se pudo insertar la sucursal.");
             }
             catch (Exception ex)
             {
-                return result.Error($"Unexpected error during Sucursal inserting: {ex.Message}");
+                return result.Error($"Error inesperado al insertar la sucursal: {ex.Message}");
             }
         }
+
 
         public ServiceResult SucursalActualizar(SucursalesDTO sucursal)
         {
@@ -101,13 +104,14 @@ namespace SistemaViajes.BusinessLogic.Services
             {
                 var response = _sucursalesRepository.SucursalActualizar(sucursal);
 
-                return response.CodeStatus == 1
-                    ? result.Ok(response)
-                    : result.Error(response);
+                if (response.CodeStatus == 1)
+                    return result.Ok("Sucursal actualizada correctamente.");
+
+                return result.Error(response.MessageStatus ?? "No se pudo actualizar la sucursal.");
             }
             catch (Exception ex)
             {
-                return result.Error($"Unexpected error during Sucursal updating: {ex.Message}");
+                return result.Error($"Error inesperado al actualizar la sucursal: {ex.Message}");
             }
         }
 
@@ -116,21 +120,24 @@ namespace SistemaViajes.BusinessLogic.Services
             var result = new ServiceResult();
 
             if (id <= 0)
-                return result.Error("Sucursal ID is required");
+                return result.Error("El ID de la sucursal es requerido.");
 
             try
             {
                 var response = _sucursalesRepository.SucursalEliminar(id);
 
-                return response.CodeStatus == 1
-                    ? result.Ok(response)
-                    : result.Error(response);
+                if (response.CodeStatus == 1)
+                    return result.Ok("Sucursal eliminada correctamente.");
+
+                return result.Error(response.MessageStatus ?? "No se pudo eliminar la sucursal.");
             }
             catch (Exception ex)
             {
-                return result.Error($"Unexpected error during Sucursal deletion: {ex.Message}");
+                return result.Error($"Error inesperado al eliminar la sucursal: {ex.Message}");
             }
         }
+
+
         #endregion
     }
 }

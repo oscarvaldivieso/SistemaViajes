@@ -37,13 +37,14 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
             try
             {
                 using var db = new SqlConnection(SistemaViajesContext.ConnectionString);
+                // Esto obtiene lo que retorna tu SP
                 var result = db.QueryFirstOrDefault<RequestStatus>(
                     ScriptDatabase.SP_Sucursales_Insertar,
                     parameter,
                     commandType: CommandType.StoredProcedure
                 );
 
-                return new RequestStatus { CodeStatus = 1, MessageStatus = "Sucursal insertada exitosamente" };
+                return result; // <-- no crees un nuevo RequestStatus aquí
             }
             catch (Exception ex)
             {
@@ -54,6 +55,7 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 };
             }
         }
+
 
         public RequestStatus SucursalActualizar(SucursalesDTO sucursal)
         {
@@ -70,6 +72,7 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
             try
             {
                 using var db = new SqlConnection(SistemaViajesContext.ConnectionString);
+                // Devuelve lo que retorna el SP
                 var result = db.QueryFirstOrDefault<RequestStatus>(
                     ScriptDatabase.SP_Sucursales_Actualizar,
                     parameter,
@@ -79,7 +82,7 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 return result ?? new RequestStatus
                 {
                     CodeStatus = 0,
-                    MessageStatus = "Unknown error during update"
+                    MessageStatus = "Error desconocido al actualizar la sucursal"
                 };
             }
             catch (Exception ex)
@@ -87,7 +90,7 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 return new RequestStatus
                 {
                     CodeStatus = 0,
-                    MessageStatus = $"Unexpected error: {ex.Message}"
+                    MessageStatus = $"Error inesperado: {ex.Message}"
                 };
             }
         }
@@ -109,7 +112,7 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 return result ?? new RequestStatus
                 {
                     CodeStatus = 0,
-                    MessageStatus = "Unknown error during deletion"
+                    MessageStatus = "Error desconocido al eliminar la sucursal"
                 };
             }
             catch (Exception ex)
@@ -117,9 +120,10 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 return new RequestStatus
                 {
                     CodeStatus = 0,
-                    MessageStatus = $"Unexpected error: {ex.Message}"
+                    MessageStatus = $"Error inesperado: {ex.Message}"
                 };
             }
         }
+
     }
 }
