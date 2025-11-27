@@ -1,6 +1,7 @@
 ﻿using SistemaViajes.BusinessLogic.Services;
 using SistemaViajes.DataAccess;
 using SistemaViajes.DataAccess.Repositories.Gral;
+using SistemaViajes.DataAccess.Repositories.Oper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using System;
@@ -24,6 +25,7 @@ namespace SistemaViajes.BusinessLogic
             services.AddScoped<SucursalesRepository>();
 
             services.AddScoped<ColaboradoresRepository>();
+            services.AddScoped<ViajesRepository>();
 
         }
 
@@ -31,6 +33,7 @@ namespace SistemaViajes.BusinessLogic
         {
             services.AddScoped<GralServices>();
             services.AddScoped<RRHHServices>();
+            services.AddScoped<OperServices>();
         }
 
 

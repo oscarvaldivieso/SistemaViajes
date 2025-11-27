@@ -32,5 +32,10 @@ namespace SistemaViajes.DataAccess
         public static string SP_Colaboradores_Actualizar = "[RRHH].[SP_Colaboradores_Actualizar]";
         public static string SP_Colaboradores_Eliminar = "[RRHH].[SP_Colaboradores_Eliminar]";
         #endregion
+
+        #region Viajes
+        public static string SP_Viajes_Listar = "[Oper].[SP_Viajes_Listar]";
+        public static string SP_Viajes_Insertar = "[Oper].[SP_Viajes_Insertar]";
+        #endregion
     }
 }
