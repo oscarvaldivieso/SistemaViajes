@@ -90,6 +90,26 @@ namespace SistemaViajes.BusinessLogic.Services
                 return result.Error($"Error al eliminar colaborador: {ex.Message}");
             }
         }
+
+
+        public ServiceResult ListarPorSucursal(int sucu_Id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var lista = _colaboradoresRepository.ListarPorSucursal(sucu_Id);
+
+                if (!lista.Any())
+                    return result.NotFound("No se encontraron colaboradores para esta sucursal.");
+
+                return result.Ok( "Listado obtenido correctamente.",lista);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error al obtener los colaboradores: {ex.Message}");
+            }
+        }
         #endregion
     }
 }

@@ -13,12 +13,14 @@ namespace SistemaViajes.BusinessLogic.Services
         private readonly DepartamentosRepository _departamentosRepository;
         private readonly MunicipiosRepository _municipiosRepository;
         private readonly SucursalesRepository _sucursalesRepository;
+        private readonly TransportistasRepository _transportistasRepository;
 
-        public GralServices(DepartamentosRepository departamentosRepository, MunicipiosRepository municipiosRepository, SucursalesRepository sucursalesRepository)
+        public GralServices(DepartamentosRepository departamentosRepository, MunicipiosRepository municipiosRepository, SucursalesRepository sucursalesRepository, TransportistasRepository transportistasRepository)
         {
             _departamentosRepository = departamentosRepository;
             _municipiosRepository = municipiosRepository;
             _sucursalesRepository = sucursalesRepository;
+            _transportistasRepository = transportistasRepository;
         }
 
         #region Departamentos
@@ -138,6 +140,78 @@ namespace SistemaViajes.BusinessLogic.Services
         }
 
 
+        #endregion
+
+        #region Transportistas
+        public ServiceResult ListarTransportistas()
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var list = _transportistasRepository.List();
+                return result.Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult BuscarTransportistas(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var item = _transportistasRepository.Find(id);
+                return result.Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult InsertarTransportistas(TransportistasDTO dto)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var response = _transportistasRepository.Insert(dto);
+                return response.CodeStatus == 1 ? result.Ok(response) : result.Error(response.MessageStatus);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult ActualizarTransportistas(TransportistasDTO dto)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var response = _transportistasRepository.Update(dto);
+                return response.CodeStatus == 1 ? result.Ok(response) : result.Error(response.MessageStatus);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        public ServiceResult EliminarTransportistas(int id)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var response = _transportistasRepository.Delete(id);
+                return response.CodeStatus == 1 ? result.Ok(response) : result.Error(response.MessageStatus);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
         #endregion
     }
 }

@@ -26,6 +26,7 @@ namespace SistemaViajes.BusinessLogic
 
             services.AddScoped<ColaboradoresRepository>();
             services.AddScoped<ViajesRepository>();
+            services.AddScoped<TransportistasRepository>();
 
         }
 

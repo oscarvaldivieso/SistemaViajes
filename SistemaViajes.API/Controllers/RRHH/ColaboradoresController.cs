@@ -4,6 +4,8 @@ using SistemaViajes.Models.Models;
 
 namespace SistemaViajes.API.Controllers.RRHH
 {
+    [Route("[controller]")]
+    [ApiController]
     public class ColaboradoresController : Controller
     {
         private readonly RRHHServices _rrhhServices;
@@ -41,6 +43,20 @@ namespace SistemaViajes.API.Controllers.RRHH
         public IActionResult Eliminar(int id)
         {
             var response = _rrhhServices.ColaboradoresEliminar(id);
+            return Ok(response);
+        }
+
+        [HttpGet("ListarPorSucursal/{sucu_Id}")]
+        public IActionResult ListarPorSucursal(int sucu_Id)
+        {
+            var response = _rrhhServices.ListarPorSucursal(sucu_Id);
+
+            if (response.Code == 404)
+                return NotFound(response);
+
+            if (response.Code == 500)
+                return StatusCode(500, response);
+
             return Ok(response);
         }
     }

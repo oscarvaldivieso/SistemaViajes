@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using SistemaViajes.Models.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,6 +78,23 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
                 ScriptDatabase.SP_Colaboradores_Eliminar,
                 parameters,
                 commandType: System.Data.CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
+
+        public IEnumerable<ColaboradoresDTO> ListarPorSucursal(int sucu_Id)
+        {
+            using var db = new SqlConnection(SistemaViajesContext.ConnectionString);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Sucu_Id", sucu_Id);
+
+            var result = db.Query<ColaboradoresDTO>(
+                ScriptDatabase.SP_Colaboradores_ListarPorSucursal,
+                parameters,
+                commandType: CommandType.StoredProcedure
             );
 
             return result;

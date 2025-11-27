@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,5 +19,6 @@ namespace SistemaViajes.Models.Models
         public int? Usua_Modificacion { get; set; }
         public DateTime? Colb_FechaModificacion { get; set; }
         public string Colb_Sexo { get; set; }
+        public double Cosu_DistanciaKm { get; set; }
     }
 }

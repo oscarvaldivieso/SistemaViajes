@@ -31,11 +31,21 @@ namespace SistemaViajes.DataAccess
         public static string SP_Colaboradores_Insertar = "[RRHH].[SP_Colaboradores_Insertar]";
         public static string SP_Colaboradores_Actualizar = "[RRHH].[SP_Colaboradores_Actualizar]";
         public static string SP_Colaboradores_Eliminar = "[RRHH].[SP_Colaboradores_Eliminar]";
+        public static string SP_Colaboradores_ListarPorSucursal = "RRHH.SP_Colaboradores_ListarPorSucursal";
+
         #endregion
 
         #region Viajes
         public static string SP_Viajes_Listar = "[Oper].[SP_Viajes_Listar]";
         public static string SP_Viajes_Insertar = "[Oper].[SP_Viajes_Insertar]";
+        #endregion
+
+        #region Transportistas
+        public const string SP_Transportistas_Listar = "Trns.SP_Transportistas_Listar";
+        public const string SP_Transportistas_Buscar = "Trns.SP_Transportistas_Buscar";
+        public const string SP_Transportistas_Insertar = "Trns.SP_Transportistas_Insertar";
+        public const string SP_Transportistas_Actualizar = "Trns.SP_Transportistas_Actualizar";
+        public const string SP_Transportistas_Eliminar = "Trns.SP_Transportistas_Eliminar";
         #endregion
     }
 }
