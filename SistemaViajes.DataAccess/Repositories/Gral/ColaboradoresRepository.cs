@@ -10,6 +10,23 @@ using System.Threading.Tasks;
 
 namespace SistemaViajes.DataAccess.Repositories.Gral
 {
+    public static class DataTableHelper
+    {
+        public static DataTable ToColaboradoresSucursalesDataTable(List<ColaboradorSucursalDTO> sucursales)
+        {
+            var table = new DataTable();
+            table.Columns.Add("Sucu_Id", typeof(int));
+            table.Columns.Add("CoSu_DistanciaKm", typeof(decimal));
+
+            foreach (var sucursal in sucursales)
+            {
+                table.Rows.Add(sucursal.Sucu_Id, sucursal.CoSu_DistanciaKm);
+            }
+
+            return table;
+        }
+    }
+
     public class ColaboradoresRepository
     {
         public IEnumerable<ColaboradoresDTO> ColaboradoresListar()
@@ -23,11 +40,14 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
             return result;
         }
 
-        public RequestStatus ColaboradoresInsertar(ColaboradoresDTO item)
+        public RequestStatus ColaboradoresInsertar(ColaboradoresInsertarDTO item)
         {
             using var db = new SqlConnection(SistemaViajesContext.ConnectionString);
-            var parameters = new DynamicParameters();
 
+            // Convertir la lista de sucursales a DataTable
+            var sucursalesTable = DataTableHelper.ToColaboradoresSucursalesDataTable(item.Sucursales);
+
+            var parameters = new DynamicParameters();
             parameters.Add("@Colb_Codigo", item.Colb_Codigo);
             parameters.Add("@Colb_Identidad", item.Colb_Identidad);
             parameters.Add("@Colb_NombreCompleto", item.Colb_NombreCompleto);
@@ -35,6 +55,8 @@ namespace SistemaViajes.DataAccess.Repositories.Gral
             parameters.Add("@Colb_Sexo", item.Colb_Sexo);
             parameters.Add("@Usua_Creacion", item.Usua_Creacion);
 
+            // Agregar el TVP para las sucursales
+            parameters.Add("@Sucursales", sucursalesTable.AsTableValuedParameter("RRHH.ColaboradoresSucursalesType"));
 
             var result = db.QueryFirst<RequestStatus>(
                 ScriptDatabase.SP_Colaboradores_Insertar,

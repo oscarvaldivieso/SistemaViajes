@@ -24,7 +24,7 @@ namespace SistemaViajes.API.Controllers.RRHH
 
         // POST: Insertar
         [HttpPost("Insertar")]
-        public IActionResult Insertar([FromBody] ColaboradoresDTO item)
+        public IActionResult Insertar([FromBody] ColaboradoresInsertarDTO item)
         {
             var response = _rrhhServices.ColaboradoresInsertar(item);
             return Ok(response);

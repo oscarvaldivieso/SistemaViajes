@@ -34,16 +34,28 @@ namespace SistemaViajes.BusinessLogic.Services
             }
         }
 
-        public ServiceResult ColaboradoresInsertar(ColaboradoresDTO item)
+        public ServiceResult ColaboradoresInsertar(ColaboradoresInsertarDTO item)
         {
             var result = new ServiceResult();
 
             try
             {
+                // Validación: Debe tener al menos una sucursal
+                if (item.Sucursales == null || !item.Sucursales.Any())
+                {
+                    return result.SetMessage("Debe asignar al menos una sucursal al colaborador.", ServiceResultType.Warning);
+                }
+
+                // Validación: Distancias válidas
+                if (item.Sucursales.Any(s => s.CoSu_DistanciaKm <= 0 || s.CoSu_DistanciaKm > 50))
+                {
+                    return result.SetMessage("Las distancias deben ser mayores a 0 y no exceder los 50 km.", ServiceResultType.Warning);
+                }
+
                 var response = _colaboradoresRepository.ColaboradoresInsertar(item);
 
                 if (response.CodeStatus == 1)
-                    return result.Ok(null, "Colaborador registrado exitosamente.");
+                    return result.Ok("Colaborador y sucursales registrados exitosamente.", null);
 
                 return result.SetMessage(response.MessageStatus, ServiceResultType.Warning);
             }
