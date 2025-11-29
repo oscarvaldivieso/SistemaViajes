@@ -47,5 +47,11 @@ namespace SistemaViajes.DataAccess
         public const string SP_Transportistas_Actualizar = "Trns.SP_Transportistas_Actualizar";
         public const string SP_Transportistas_Eliminar = "Trns.SP_Transportistas_Eliminar";
         #endregion
+
+
+
+        #region Usuarios
+        public static string SP_Usuarios_Login = "[Acce].[SP_Usuarios_Login]";
+        #endregion
     }
 }

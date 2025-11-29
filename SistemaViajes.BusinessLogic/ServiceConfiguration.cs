@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SistemaViajes.DataAccess.Repositories.Acce;
 
 namespace SistemaViajes.BusinessLogic
 {
@@ -28,6 +29,10 @@ namespace SistemaViajes.BusinessLogic
             services.AddScoped<ViajesRepository>();
             services.AddScoped<TransportistasRepository>();
 
+            services.AddScoped<UsuariosRepository>();
+
+
+
         }
 
         public static void BusinessLogic(this IServiceCollection services)
@@ -35,6 +40,7 @@ namespace SistemaViajes.BusinessLogic
             services.AddScoped<GralServices>();
             services.AddScoped<RRHHServices>();
             services.AddScoped<OperServices>();
+            services.AddScoped<AcceServices>();
         }
 
 
