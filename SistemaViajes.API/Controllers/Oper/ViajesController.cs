@@ -17,10 +17,44 @@ namespace SistemaViajes.API.Controllers.Oper
         }
 
         [HttpGet("Listar")]
+        [ProducesResponseType(typeof(ServiceResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResult), StatusCodes.Status400BadRequest)]
         public IActionResult List()
         {
             var result = _operServices.ListarViajes();
             return result.Success ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpGet("Detalle/{id:int}")]
+        [ProducesResponseType(typeof(ServiceResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceResult), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var result = _operServices.ListarViajes();
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            var viajes = result.Data as IEnumerable<ViajeListDTO>;
+            var viaje = viajes?.FirstOrDefault(v => v.Viaj_Id == id);
+
+            if (viaje == null)
+            {
+                return NotFound(new ServiceResult
+                {
+                    Success = false,
+                    Message = $"No se encontró el viaje con ID {id}"
+                });
+            }
+
+            return Ok(new ServiceResult
+            {
+                Success = true,
+                Message = "Viaje encontrado.",
+                Data = viaje
+            });
         }
 
         [HttpPost("Insertar")]

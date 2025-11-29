@@ -13,14 +13,37 @@ namespace SistemaViajes.DataAccess.Repositories.Oper
 
     public class ViajesRepository
     {
-        public IEnumerable<ViajesDTO> ListarViajes()
+        public IEnumerable<ViajeListDTO> ListarViajes()
         {
             using var db = new SqlConnection(SistemaViajesContext.ConnectionString);
-            var result = db.Query<ViajesDTO>(
+
+            // Usar QueryMultiple porque el SP devuelve 2 result sets
+            using var multi = db.QueryMultiple(
                 ScriptDatabase.SP_Viajes_Listar,
                 commandType: CommandType.StoredProcedure
-            ).ToList();
-            return result;
+            );
+
+            // Leer el primer result set (Viajes con totales)
+            var viajes = multi.Read<ViajeListDTO>().ToList();
+
+            // Leer el segundo result set (Colaboradores de cada viaje)
+            var colaboradores = multi.Read<ColaboradorViajeDetalleDTO>().ToList();
+
+            // Agrupar colaboradores por Viaj_Id y asignarlos a cada viaje
+            var colaboradoresPorViaje = colaboradores
+                .GroupBy(c => c.Viaj_Id)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            // Asignar colaboradores a cada viaje
+            foreach (var viaje in viajes)
+            {
+                if (colaboradoresPorViaje.ContainsKey(viaje.Viaj_Id))
+                {
+                    viaje.Colaboradores = colaboradoresPorViaje[viaje.Viaj_Id];
+                }
+            }
+
+            return viajes;
         }
 
         public RequestStatus ViajeInsertar(ViajesDTO viaje)

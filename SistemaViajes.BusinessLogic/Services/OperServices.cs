@@ -20,16 +20,24 @@ namespace SistemaViajes.BusinessLogic.Services
 
         #region Viajes
 
+
         public ServiceResult ListarViajes()
         {
             var result = new ServiceResult();
             try
             {
-                var response = _viajesRepository.ListarViajes();
-                return result.Ok("Viajes listados correctamente.", response);
+                var viajes = _viajesRepository.ListarViajes();
+
+                if (viajes == null || !viajes.Any())
+                {
+                    return result.Ok("No se encontraron viajes registrados.", new List<ViajeListDTO>());
+                }
+
+                return result.Ok($"Se encontraron {viajes.Count()} viaje(s).", viajes);
             }
             catch (Exception ex)
             {
+                // Log the exception here if you have logging
                 return result.Error($"Error al obtener los viajes: {ex.Message}");
             }
         }
