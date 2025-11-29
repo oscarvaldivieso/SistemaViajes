@@ -58,6 +58,29 @@ namespace SistemaViajes.BusinessLogic.Services
             }
         }
 
+
+        public ServiceResult ObtenerReportePorTransportista(ViajesReporteRequestDTO request)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                // Validaciones
+                if (request.FechaInicio > request.FechaFin)
+                    return result.BadRequest("La fecha de inicio no puede ser mayor que la fecha fin");
+
+                var reporte = _viajesRepository.ObtenerReportePorTransportista(request);
+
+                if (reporte == null)
+                    return result.Error("Error al generar el reporte");
+
+                return result.Ok(reporte);
+            }
+            catch (Exception ex)
+            {
+                return result.Error($"Error inesperado: {ex.Message}");
+            }
+        }
+
         #endregion
     }
 }

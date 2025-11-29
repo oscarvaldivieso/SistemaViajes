@@ -46,6 +46,7 @@ namespace SistemaViajes.DataAccess
         public const string SP_Transportistas_Insertar = "Trns.SP_Transportistas_Insertar";
         public const string SP_Transportistas_Actualizar = "Trns.SP_Transportistas_Actualizar";
         public const string SP_Transportistas_Eliminar = "Trns.SP_Transportistas_Eliminar";
+        public const string SP_Viajes_ReportePorTransportista = "[Oper].[SP_Viajes_ReportePorTransportista]";
         #endregion
 
 

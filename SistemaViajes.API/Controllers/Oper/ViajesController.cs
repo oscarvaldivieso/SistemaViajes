@@ -2,6 +2,7 @@
 using SistemaViajes.BusinessLogic.Services;
 using SistemaViajes.BusinessLogic;
 using SistemaViajes.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaViajes.API.Controllers.Oper
 {
@@ -95,6 +96,20 @@ namespace SistemaViajes.API.Controllers.Oper
                     Message = "Error interno del servidor.",
                     Data = ex.Message
                 });
+            }
+        }
+
+        [HttpPost("Reporte")]
+        public IActionResult ObtenerReporte([FromBody] ViajesReporteRequestDTO request)
+        {
+            var result = _operServices.ObtenerReportePorTransportista(request);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
             }
         }
     }

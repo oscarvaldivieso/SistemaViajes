@@ -85,5 +85,54 @@ namespace SistemaViajes.DataAccess.Repositories.Oper
                 };
             }
         }
+
+
+
+
+
+
+
+        public ViajesReporteResponseDTO ObtenerReportePorTransportista(ViajesReporteRequestDTO request)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@FechaInicio", request.FechaInicio);
+            parameters.Add("@FechaFin", request.FechaFin);
+            parameters.Add("@Tran_Id", request.Tran_Id);
+
+            SqlConnection db = null;
+            SqlMapper.GridReader multi = null;
+
+            try
+            {
+                db = new SqlConnection(SistemaViajesContext.ConnectionString);
+                db.Open();
+
+                multi = db.QueryMultiple(
+                    ScriptDatabase.SP_Viajes_ReportePorTransportista,
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                // Leer los dos resultados
+                var detalleViajes = multi.Read<ViajeDetalleReporteDTO>().ToList();
+                var resumenTransportistas = multi.Read<TransportistaResumenReporteDTO>().ToList();
+
+                return new ViajesReporteResponseDTO
+                {
+                    DetalleViajes = detalleViajes,
+                    ResumenTransportistas = resumenTransportistas
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener reporte: {ex.Message}");
+            }
+            finally
+            {
+                multi?.Dispose();
+                db?.Close();
+                db?.Dispose();
+            }
+        }
     }
 }
